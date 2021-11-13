@@ -1,0 +1,23 @@
+{
+  "name": "hktr92/sparkle-framework",
+  "description": "a poc of the future php frameworks",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "hacktor_92",
+      "email": "email@example.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Sparkle\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.1"
+  },
+  "require-dev": {
+    "vimeo/psalm": "^4.12"
+  }
+}

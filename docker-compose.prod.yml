@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: php-prod
+      args:
+        BUILD_VERSION: dev
+    environment:
+      PHP_FPM_WORKERS: ${PHP_FPM_WORKERS:-5}
+    user: ${UID:-1000}:${GID:-1000}
+    depends_on:
+      - mysql
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    volumes:
+      - ./public:/app/public
+    ports:
+      - 9859:80
+    environment:
+      NGINX_ENTRYPOINT_QUIET_LOGS: ${NGINX_ENTRYPOINT_QUIET_LOGS:-1}
+      PHP_FPM_URL: php:9000
+    depends_on:
+      - php
+  mysql:
+    build:
+      context: docker/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: tazz_partner_test
+      MYSQL_USER: supplier_user
+      MYSQL_PASSWORD: supplier_pw
+      MYSQL_ROOT_PASSWORD: root_pw
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID:-}
+      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN:-}
+      BLACKFIRE_LOG_LEVEL: 3
+      BLACKFIRE_LOG_FILE: /proc/1/fd/2

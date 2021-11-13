@@ -1,0 +1,6 @@
+/.idea
+/.git
+/bin/.phpunit
+/vendor
+/var
+/docker/.cache
